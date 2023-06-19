@@ -7,14 +7,14 @@
 /**
  * The site title
  */
-$config['site_title'] = 'Sprout3 test';
+$config['site_title'] = 'KB Packages';
 
 
 /**
  * The email address that emails are sent from.
  * Default is no-reply @ the server name with any www part removed.
  */
-$config['site_email'] = 'no-reply@' . str_replace('www.', '', $_SERVER['SERVER_NAME']);
+$config['site_email'] = 'info@karmabunny.com.au';
 
 
 /**

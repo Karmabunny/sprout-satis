@@ -8,7 +8,10 @@
         "optimize-autoloader": true,
         "sort-packages": true,
         "platform": {
-            "php": "7.4"
+            "php": "8.1"
+        },
+        "allow-plugins": {
+            "composer/satis": false
         }
     },
     "autoload": {
@@ -34,6 +37,7 @@
         "test": "phpunit --testdox --configuration phpunit.xml.dist"
     },
     "require": {
+        "composer/satis": "dev-main",
         "sproutcms/cms": "^3.2"
     },
     "require-dev": {

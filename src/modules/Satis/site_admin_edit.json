@@ -1,0 +1,29 @@
+{
+    "Details": [
+        {
+            "field": {
+                "name": "name",
+                "label": "Site Name",
+                "display": "Fb::text",
+                "items": {},
+                "required": true,
+                "validate": [
+                    {"func": "Validity::length", "args": [0, 100]}
+                ]
+            }
+        },
+        {
+            "field": {
+                "name": "token",
+                "label": "Auth Token",
+                "display": "Fb::randomCode",
+                "items": {
+                    "size": 32
+                },
+                "required": true,
+                "validate": [
+                ]
+            }
+        }
+    ]
+}

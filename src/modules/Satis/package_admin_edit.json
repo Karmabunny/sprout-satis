@@ -1,0 +1,44 @@
+{
+    "Details": [
+        {
+            "field": {
+                "name": "name",
+                "label": "Package Name",
+                "helptext": "The composer package name, like 'sproutcms/cms'",
+                "display": "Fb::text",
+                "items": {},
+                "required": true,
+                "validate": [
+                    {"func": "Validity::length", "args": [0, 100]}
+                ]
+            }
+        },
+        {
+            "field": {
+                "name": "webhook_token",
+                "label": "Webhook Token",
+                "display": "Fb::randomCode",
+                "items": {
+                    "size": 32
+                },
+                "required": true,
+                "validate": [
+                ]
+            }
+        },
+        {
+            "field": {
+                "name": "repo_url",
+                "label": "Repository URL",
+                "helptext": "like git@github.com:karmabunny/sprout",
+                "display": "Fb::text",
+                "items": {},
+                "required": true,
+                "validate": [
+                    {"func": "Validity::length", "args": [0, 255]}
+                ]
+            }
+        }
+    ],
+    "Categories": "categories"
+}

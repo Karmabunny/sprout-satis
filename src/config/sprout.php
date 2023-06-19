@@ -142,7 +142,7 @@ $config['admin_tile_hidden'] = [];
 /**
  * The URL which the user should be redirected to when logging in
  */
-$config['admin_intro'] = 'admin/dashboard';
+$config['admin_intro'] = 'admin/intro/package';
 
 
 /**

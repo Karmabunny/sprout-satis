@@ -1,0 +1,31 @@
+version: "3.5"
+services:
+  app:
+    build: .
+    user: ${USER_UID}
+    volumes:
+      - .:/srv:rw
+      - ./docker/env:/srv/.env:rw
+
+  mysql:
+    image: mariadb:10.6
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: sprout3
+      MYSQL_USER: sprout3
+      MYSQL_PASSWORD: sprout3
+    volumes:
+      - db:/var/lib/mysql:rw
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/srv:ro
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - nginx:/var/cache/nginx:rw
+
+volumes:
+  db:
+  nginx:

@@ -1,0 +1,10 @@
+<phpunit bootstrap="web/index.php">
+	<testsuites>
+		<testsuite name="all">
+			<directory>src/modules/*/tests/</directory>
+		</testsuite>
+	</testsuites>
+	<php>
+		<const name="PHPUNIT" value="true"/>
+	</php>
+</phpunit>

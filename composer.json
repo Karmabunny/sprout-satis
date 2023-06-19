@@ -1,0 +1,42 @@
+{
+    "$schema": "https://getcomposer.org/schema.json",
+    "name": "sproutcms/site",
+    "description": "Template Sprout 3 Application",
+    "license": "GPL-2.0-or-later",
+    "keywords": ["sprout", "cms", "content-management-system", "framework", "mysql"],
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true,
+        "platform": {
+            "php": "7.4"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "SproutModules\\Karmabunny\\": "src/modules"
+        }
+    },
+    "extra": {
+        "locals": {
+            "karmabunny/kb": "../kbphp",
+            "karmabunny/pdb": "../kbpdb",
+            "karmabunny/rdb": "../kbrdb",
+            "karmabunny/nstrack": "../nstrack",
+            "sproutcms/cms": "../sprout3"
+        }
+    },
+    "scripts": {
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php -S 0.0.0.0:8080 -t web web/index.php"
+        ],
+        "patch-locals": "@php tools/patch_locals.php",
+        "test": "phpunit --testdox --configuration phpunit.xml.dist"
+    },
+    "require": {
+        "sproutcms/cms": "^3.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    }
+}

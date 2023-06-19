@@ -32,17 +32,9 @@ if (IN_PRODUCTION) {
 
 
 /**
-* Remove these three lines once SproutCMS has been set up
-**/
-Sprout\Helpers\Register::modules([
-    'Welcome',
-]);
-
-
-/**
  * Enabled sprout v3 modules
  */
 Sprout\Helpers\Register::modules([
     'HomePage',
-    'Demo',
+    'Satis',
 ]);

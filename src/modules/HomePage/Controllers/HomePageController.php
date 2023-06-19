@@ -18,6 +18,7 @@ use Kohana;
 use SproutModules\Karmabunny\HomePage\Helpers\HomePages;
 use Sprout\Controllers\Controller;
 use Sprout\Helpers\Needs;
+use Sprout\Helpers\Url;
 use Sprout\Helpers\View;
 
 /**
@@ -33,21 +34,6 @@ class HomePageController extends Controller
      */
     public function index()
     {
-        $page = HomePages::getForSubSite(0);
-        $browser_title = Kohana::config('sprout.site_title');
-        $banners = HomePages::getActiveBanners($page['id']);
-        $promos = HomePages::getActivePromos($page['id'], 3);
-
-        if (!empty($page['alt_browser_title'])) $browser_title = $page['alt_browser_title'];
-        if (!empty($page['meta_keywords'])) Needs::addMeta('keywords', $page['meta_keywords']);
-        if (!empty($page['meta_description'])) Needs::addMeta('description', $page['meta_description']);
-
-        $view = View::create('skin/layouts/03_home/home');
-        $view->browser_title = $browser_title;
-        $view->page = $page;
-        $view->banners = $banners;
-        $view->promos = $promos;
-
-        echo $view->render();
+        Url::redirect('/public');
     }
 }

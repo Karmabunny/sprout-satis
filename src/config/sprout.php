@@ -30,14 +30,14 @@ $config['rich_text_type'] = 'TinyMCE4';
 /**
  * Who to send emails to if any cronjobs fail
  **/
-$config['cron_email'] = 'root@localhost';
+$config['cron_email'] = 'cron@karmabunny.com.au';
 
 /**
  * Email address for the webmaster/developer
  *
  * This is shown in places like the coming_soon and maintenance pages
  */
-$config['info_email'] = 'info@example.com';
+$config['info_email'] = 'info@karmabunny.com.au';
 
 /**
  * SMTP settings for email sending.
@@ -73,7 +73,7 @@ if (IN_PRODUCTION) {
     $config['email_allowed_domains'] = null;
 } else {
     // Only permit email to be sent to addresses at devel.example.com
-    $config['email_allowed_domains'] = ['devel.example.com'];
+    $config['email_allowed_domains'] = ['karmabunny.com.au'];
 }
 
 

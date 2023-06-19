@@ -12,17 +12,17 @@ $config['product_name'] = 'SproutCMS';
  * URL to product website
  * If significant changes to the product are made, it's requested to change this
  */
-$config['product_url'] = 'http://getsproutcms.com/';
+$config['product_url'] = 'http://sproutcms.com/';
 
 /**
  * Name of the organisation to contact for support
  */
-$config['support_organisation'] = 'SproutCMS team';
+$config['support_organisation'] = 'Karmabunny';
 
 /**
  * URL to contact for support
  */
-$config['support_url'] = 'http://getsproutcms.com/';
+$config['support_url'] = 'http://karmabunny.com.au/';
 
 /**
  * Copyright statement, for the footer

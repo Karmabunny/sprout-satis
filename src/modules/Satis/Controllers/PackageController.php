@@ -6,6 +6,7 @@
 namespace SproutModules\Karmabunny\Satis\Controllers;
 
 use karmabunny\router\Route;
+use Kohana;
 use Sprout\Controllers\Controller;
 use Sprout\Helpers\AdminAuth;
 use Sprout\Helpers\Request;
@@ -77,6 +78,12 @@ class PackageController extends Controller
      */
     private function hasAuth()
     {
+        $ips = Kohana::config('satis.whitelist_ips');
+
+        if (in_array(Request::userIp(), $ips)) {
+            return true;
+        }
+
         if (AdminAuth::isLoggedIn()) {
             return true;
         }

@@ -2012,16 +2012,16 @@
         },
         {
             "name": "sproutcms/cms",
-            "version": "v3.2.23",
+            "version": "v3.2.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Karmabunny/sprout3.git",
-                "reference": "d69f292c5160355c20a85304c09e97ca57785e51"
+                "reference": "1acaac86f0f0a740fdd992233dd9c2f777a14487"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Karmabunny/sprout3/zipball/d69f292c5160355c20a85304c09e97ca57785e51",
-                "reference": "d69f292c5160355c20a85304c09e97ca57785e51",
+                "url": "https://api.github.com/repos/Karmabunny/sprout3/zipball/1acaac86f0f0a740fdd992233dd9c2f777a14487",
+                "reference": "1acaac86f0f0a740fdd992233dd9c2f777a14487",
                 "shasum": ""
             },
             "require": {
@@ -2088,9 +2088,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Karmabunny/sprout3/issues",
-                "source": "https://github.com/Karmabunny/sprout3/tree/v3.2.23"
+                "source": "https://github.com/Karmabunny/sprout3/tree/v3.2.24"
             },
-            "time": "2023-06-20T06:18:17+00:00"
+            "time": "2023-06-20T07:19:40+00:00"
         },
         {
             "name": "symfony/console",

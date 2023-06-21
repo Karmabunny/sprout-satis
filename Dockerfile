@@ -1,6 +1,6 @@
-FROM alpine:3.17 AS base
+FROM docker.io/alpine:3.17 AS base
 
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+COPY --from=docker.io/composer:2 /usr/bin/composer /usr/bin/composer
 
 RUN set -xe \
     && apk add --update --no-cache \

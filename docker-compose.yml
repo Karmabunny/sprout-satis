@@ -3,19 +3,9 @@ services:
   app:
     build: .
     user: ${USER_UID}
+    privileged: true
     volumes:
       - .:/srv:rw
-      - ./docker/env:/srv/.env:rw
-
-  mysql:
-    image: mariadb:10.6
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: sprout3
-      MYSQL_USER: sprout3
-      MYSQL_PASSWORD: sprout3
-    volumes:
-      - db:/var/lib/mysql:rw
 
   nginx:
     image: nginx:alpine

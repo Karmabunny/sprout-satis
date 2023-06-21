@@ -125,7 +125,12 @@ class WebhookController extends Controller
             throw new HttpException(401, 'Invalid signature');
         }
 
-        $action = $json['action'] ?? '??';
+        $action = Request::getHeader('x-github-event');
+
+        if ($action === 'ping') {
+            // TODO something else? record it somewhere?
+            Json::confirm(['message' => 'pong']);
+        }
 
         if ($action !== 'push') {
             throw new HttpException(400, "Invalid action: '{$action}', requires 'push'");

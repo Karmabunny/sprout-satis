@@ -4,7 +4,6 @@ $url = 'http://kbpackages.ghome.bunnysites.com/hooks/github';
 $secret = 'c54hG39NzAHjiAmnLeQNDBI9DY0bYH99';
 
 $body = [
-    'action' => 'push',
     'repository' => [
         'full_name' => 'karmabunny/sprout3',
     ],
@@ -19,6 +18,7 @@ $context = stream_context_create([
         'method' => 'POST',
         'header' => [
             'x-hub-signature-256: sha256=' . $signature,
+            'x-github-event: push',
             'content-type: application/json',
         ],
         'content' => $json,

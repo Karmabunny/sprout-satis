@@ -29,6 +29,10 @@ RUN set -xe \
     php81-xml \
     php81-zip
 
+RUN set -xe \
+    && apk add --update --no-cache \
+    git openssh-client
+
 COPY docker/00_docker.ini /etc/php81/conf.d/
 COPY docker/pool.conf /etc/php81/php-fpm.d/www.conf
 

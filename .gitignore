@@ -3,7 +3,7 @@
 *#
 node_modules
 vendor
-.env
+*.env
 src/sprout
 src/files
 src/.htaccess

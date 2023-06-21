@@ -2,13 +2,13 @@ version: "3.5"
 services:
   app:
     build: .
-    user: ${USER_UID}
-    privileged: true
+    user: "${USER_UID}"
     volumes:
       - .:/srv:rw
 
   nginx:
     image: nginx:alpine
+    user: "0"
     ports:
       - "8080:8080"
     volumes:

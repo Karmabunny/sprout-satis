@@ -80,10 +80,14 @@ class WebhookController extends Controller
         header('Content-Type: application/json');
 
         set_exception_handler(function(Throwable $error) {
-            if (!$error instanceof HttpExceptionInterface) {
+            if ($error instanceof HttpExceptionInterface) {
+                $status = $error->getStatusCode();
+            } else {
+                $status = 500;
                 Kohana::logException($error, false);
             }
 
+            http_response_code($status);
             Json::error($error);
         });
 

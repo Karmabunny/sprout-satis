@@ -6,3 +6,4 @@ Some todos:
 - log webhook events somewhere
 - do something with ping events
 - add instructions for webhooks
+- log site key authorisations

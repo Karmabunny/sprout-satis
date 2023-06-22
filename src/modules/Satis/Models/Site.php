@@ -29,6 +29,7 @@ class Site extends Model
     public $token;
 
 
+    /** @inheritdoc */
     public static function getTableName(): string
     {
         return 'sites';

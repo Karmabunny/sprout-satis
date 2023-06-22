@@ -42,7 +42,7 @@ class PackageAdminController extends HasCategoriesAdminController
         $this->main_columns = [
             'Name' => 'name',
             'Active' => [new ColModifierBinary(), 'active'],
-            'Repository' => 'repo_url',
+            'Last Webhook' => [new ColModifierDate('d/m/Y g:ia'), 'webhook_valid_time'],
             'Last Build' => [new ColModifierDate('d/m/Y g:ia'), 'last_build_time'],
             'Build OK' => [new ColModifierBinary(), 'build_success'],
         ];
@@ -95,6 +95,16 @@ class PackageAdminController extends HasCategoriesAdminController
         ];
 
         return $actions;
+    }
+
+
+    /** @inheritdoc */
+    protected function _preSave($id, &$data)
+    {
+        // The token has been updated so the webhook needs to be revalidated.
+        if (!empty($data['webhook_token'])) {
+            $data['webhook_valid'] = null;
+        }
     }
 
 

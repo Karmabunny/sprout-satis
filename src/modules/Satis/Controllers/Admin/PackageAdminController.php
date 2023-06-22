@@ -57,7 +57,7 @@ class PackageAdminController extends HasCategoriesAdminController
         $tools = parent::_getTools();
 
         $url = "admin/call/{$this->controller_name}/buildAllPackages";
-        $tools['worker'] = '<li class="worker"><a href="' . Enc::html($url) . '">Build Packages</a></li>';
+        $tools['worker'] = '<li class="worker"><a href="' . Enc::html($url) . '">Build All Packages</a></li>';
 
         $url = "admin/call/{$this->controller_name}/viewConfig";
         $tools['config'] = '<li class="config"><a href="' . Enc::html($url) . '">View Config</a></li>';

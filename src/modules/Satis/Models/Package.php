@@ -14,12 +14,6 @@ use Sprout\Helpers\Pdb;
 class Package extends Model
 {
 
-    public static function getTableName(): string
-    {
-        return 'packages';
-    }
-
-
     /** @var bool */
     public $active;
 
@@ -48,6 +42,21 @@ class Package extends Model
     public $worker_id;
 
 
+    /** @inheritdoc */
+    public static function getTableName(): string
+    {
+        return 'packages';
+    }
+
+
+    /**
+     * Record a worker job ID against this package.
+     *
+     * This is used to prevent simultaneous builds of the same package.
+     *
+     * @param int $id
+     * @return void
+     */
     public function setWorker(int $id)
     {
         $pdb = static::getConnection();
@@ -56,6 +65,11 @@ class Package extends Model
     }
 
 
+    /**
+     * Update the last build time.
+     *
+     * @return void
+     */
     public function updateBuildTime()
     {
         $pdb = static::getConnection();
@@ -64,6 +78,11 @@ class Package extends Model
     }
 
 
+    /**
+     * Is there a worker already building this package?
+     *
+     * @return bool
+     */
     public function isBuilding(): bool
     {
         if (!$this->worker_id) {

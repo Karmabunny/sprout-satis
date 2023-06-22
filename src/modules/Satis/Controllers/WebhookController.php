@@ -99,20 +99,18 @@ class WebhookController extends Controller
         $body = Request::getRawBody();
         $json = Json::decode($body);
 
-        $full_name = $json['repository']['full_name'] ?? null;
+        $repo_url = $json['repository']['ssh_url'] ?? null;
 
         // Lie.
-        if (!$full_name) {
+        if (!$repo_url) {
             throw new HttpException(401, 'Invalid signature');
         }
 
         /** @var Package|null $package */
         $package = Package::find()
             ->where(['OR' => [
-                ['repo_url' => 'git@github.com:' . $full_name],
-                ['repo_url' => 'git@github.com:' . $full_name . '.git'],
-                ['repo_url' => 'https://' . $full_name],
-                ['repo_url' => 'https://' . $full_name . '.git'],
+                ['repo_url' => $repo_url],
+                ['repo_url' => preg_replace('/\.git$/', '', $repo_url)],
             ]])
             ->throw(false)
             ->one();

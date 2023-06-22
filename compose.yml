@@ -5,6 +5,7 @@ services:
     user: "${USER_UID}"
     volumes:
       - .:/srv:rw
+      - "sessions:/run/php/sessions"
 
   nginx:
     image: nginx:alpine
@@ -17,5 +18,6 @@ services:
       - nginx:/var/cache/nginx:rw
 
 volumes:
+  sessions:
   db:
   nginx:

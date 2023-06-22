@@ -60,12 +60,12 @@ class SiteAdminController extends HasCategoriesAdminController
     {
         $actions = parent::_getEditSubActions($item_id);
 
-        $username = Pdb::find('sites')
+        $name = Pdb::find('sites')
             ->where(['id' => $item_id])
-            ->value('username', false);
+            ->value('name', false);
 
         $actions[] = [
-            'url' => "admin/extra/{$this->controller_name}/authLog?username={$username}",
+            'url' => "admin/extra/{$this->controller_name}/authLog?username={$name}",
             'name' => 'Auth Log',
             'class' => 'icon-link-button icon-before icon-timeline',
         ];

@@ -76,7 +76,7 @@ abstract class BaseLog
         if (!$this->id) return;
 
         $table = static::getTableName();
-        $data = ['success' => 1];
+        $data = ['success' => 1, 'error' => null];
         $conditions = ['id' => $this->id];
 
         $this->pdb->update($table, $data, $conditions);

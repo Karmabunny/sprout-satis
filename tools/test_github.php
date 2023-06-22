@@ -1,11 +1,12 @@
 <?php
 
-$url = 'http://kbpackages.ghome.bunnysites.com/hooks/github';
-$secret = 'c54hG39NzAHjiAmnLeQNDBI9DY0bYH99';
+$url = 'http://kbpackages.gwilyn.bunnysites.com/hooks/github';
+$secret = 'KH9ZbaGp7XUtlg1kTFZjClUYt3USf5MY';
 
 $body = [
     'repository' => [
-        'full_name' => 'karmabunny/sprout3',
+        'full_name' => 'karmabunny/auth',
+        'ssh_url' => 'git@github.com:karmabunny/kbauth.git',
     ],
 ];
 
@@ -25,5 +26,7 @@ $context = stream_context_create([
     ],
 ]);
 
-echo file_get_contents($url, false, $context);
+$json = file_get_contents($url, false, $context);
+$json = json_encode(json_decode($json), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+echo $json;
 echo "\n";

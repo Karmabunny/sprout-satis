@@ -10,6 +10,7 @@ Register::adminControllers('Karmabunny\Satis', [
     'package' => 'Admin\PackageAdminController',
     'package_category' => 'Admin\PackageCategoryAdminController',
     'site' => 'Admin\SiteAdminController',
+    'site_category' => 'Admin\SiteCategoryAdminController',
 ]);
 
 Register::adminTile(

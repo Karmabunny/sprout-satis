@@ -94,12 +94,39 @@
         </index>
     </table>
 
-    <table name="webhook_log">
+    <table name="packages_webhook_log">
         <column name="id" type="INT UNSIGNED" allownull="0" autoinc="1" />
         <column name="date_added" type="DATETIME" allownull="0" />
 
+        <column name="success" type="INT UNSIGNED" allownull="0" />
+        <column name="error" type="VARCHAR(255)" allownull="1" />
+
+        <column name="package_ref" type="VARBINARY(255)" allownull="1" />
+        <column name="event" type="VARCHAR(100)" allownull="0" />
+        <column name="provider" type="ENUM(xml)" allownull="0">
+            <val>test</val>
+            <val>github</val>
+        </column>
+
+        <column name="ip_address" type="VARBINARY(32)" allownull="0" />
         <column name="headers" type="TEXT" allownull="0" default="0" />
         <column name="body" type="TEXT" allownull="0" default="0" />
+
+        <primary>
+            <col name="id" />
+        </primary>
+    </table>
+
+    <table name="sites_auth_log">
+        <column name="id" type="INT UNSIGNED" allownull="0" autoinc="1" />
+        <column name="date_added" type="DATETIME" allownull="0" />
+
+        <column name="success" type="INT UNSIGNED" allownull="0" />
+        <column name="error" type="VARCHAR(500)" allownull="1" />
+
+        <column name="ip_address" type="VARBINARY(32)" allownull="0" />
+        <column name="username" type="VARBINARY(255)" allownull="0" />
+        <column name="password_hash" type="VARBINARY(100)" allownull="0" />
 
         <primary>
             <col name="id" />

@@ -169,15 +169,20 @@ class WebhookController extends Controller
             throw new HttpException(401, 'Invalid signature');
         }
 
+        // Permit pings as a verification.
         if ($action === 'ping') {
-            // TODO something else? record it somewhere?
+            $package->setValidWebhook();
             $log->success();
             Json::confirm(['message' => 'pong']);
         }
 
+        // Gate-keep everything else.
         if ($action !== 'push') {
+            $log->error("Invalid action: {'$action}'");
             throw new HttpException(400, "Invalid action: '{$action}', requires 'push'");
         }
+
+        $package->setValidWebhook();
 
         if (!$package->isBuilding()) {
             $job = WorkerCtrl::start(SatisWorker::class, [$package->repo_url]);

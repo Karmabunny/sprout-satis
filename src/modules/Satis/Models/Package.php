@@ -33,6 +33,9 @@ class Package extends Model
     public $webhook_token;
 
     /** @var string|null */
+    public $webhook_valid;
+
+    /** @var string|null */
     public $last_build_time;
 
     /** @var bool */
@@ -75,6 +78,25 @@ class Package extends Model
         $pdb = static::getConnection();
         $table = static::getTableName();
         $pdb->update($table, ['last_build_time' => $pdb->now()], ['id' => $this->id]);
+    }
+
+
+    /**
+     * Record that the webhook has worked!
+     *
+     * This is just for debugging. It has no functional purpose.
+     *
+     * @param int $id
+     * @return void
+     */
+    public function setValidWebhook()
+    {
+        $pdb = static::getConnection();
+        $table = static::getTableName();
+
+        $now = $pdb->now();
+        $pdb->update($table, ['webhook_valid_time' => $now], ['id' => $this->id]);
+        $this->webhook_valid = $now;
     }
 
 

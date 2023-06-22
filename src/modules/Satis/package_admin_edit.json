@@ -38,6 +38,59 @@
                     {"func": "Validity::length", "args": [0, 255]}
                 ]
             }
+        },
+        {
+            "func": "SproutModules\\Karmabunny\\Satis\\Helpers\\FbHack::instructions"
+        }
+    ],
+    "Stats": [
+        {
+            "field": {
+                "name": "webhook_valid_time",
+                "label": "Last Webhook",
+                "display": "SproutModules\\Karmabunny\\Satis\\Helpers\\FbHack::date",
+                "save": false,
+                "required": false,
+                "items": {}
+            }
+        },
+        {
+            "field": {
+                "name": "last_build_time",
+                "label": "Last Build",
+                "display": "SproutModules\\Karmabunny\\Satis\\Helpers\\FbHack::date",
+                "save": false,
+                "required": false,
+                "items": {}
+            }
+        },
+        {
+            "group": {
+                "wrap-class": "-clearfix",
+                "item-class": "col col--one-half",
+                "items": [
+                    {
+                        "field": {
+                            "name": "build_success",
+                            "label": "Build OK",
+                            "display": "SproutModules\\Karmabunny\\Satis\\Helpers\\FbHack::boolean",
+                            "save": false,
+                            "required": false,
+                            "items": {}
+                        }
+                    },
+                    {
+                        "field": {
+                            "name": "worker_id",
+                            "label": "Worker",
+                            "display": "SproutModules\\Karmabunny\\Satis\\Helpers\\FbHack::worker",
+                            "save": false,
+                            "required": false,
+                            "items": {}
+                        }
+                    }
+                ]
+            }
         }
     ],
     "Categories": "categories"

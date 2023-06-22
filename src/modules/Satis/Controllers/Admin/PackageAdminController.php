@@ -5,12 +5,16 @@
 
 namespace SproutModules\Karmabunny\Satis\Controllers\Admin;
 
+use karmabunny\kb\Arrays;
 use Sprout\Controllers\Admin\HasCategoriesAdminController;
 use Sprout\Helpers\ColModifierBinary;
 use Sprout\Helpers\ColModifierDate;
+use Sprout\Helpers\ColModifierHexIP;
 use Sprout\Helpers\Enc;
+use Sprout\Helpers\Itemlist;
 use Sprout\Helpers\Json;
 use Sprout\Helpers\Notification;
+use Sprout\Helpers\Pdb;
 use Sprout\Helpers\Request;
 use Sprout\Helpers\Url;
 use Sprout\Helpers\WorkerCtrl;
@@ -62,6 +66,9 @@ class PackageAdminController extends HasCategoriesAdminController
         $url = "admin/call/{$this->controller_name}/viewConfig";
         $tools['config'] = '<li class="config"><a href="' . Enc::html($url) . '">View Config</a></li>';
 
+        $url = "admin/extra/{$this->controller_name}/webhookLog";
+        $tools['config'] = '<li class="config"><a href="' . Enc::html($url) . '">Webhook Log</a></li>';
+
         return $tools;
     }
 
@@ -71,13 +78,102 @@ class PackageAdminController extends HasCategoriesAdminController
     {
         $actions = parent::_getEditSubActions($item_id);
 
+        $name = Pdb::find('packages')
+            ->where(['id' => $item_id])
+            ->value('name', false);
+
         $actions[] = [
             'url' => "admin/call/{$this->controller_name}/buildPackage/{$item_id}",
             'name' => 'Build',
             'class' => 'icon-link-button icon-before icon-send',
         ];
 
+        $actions[] = [
+            'url' => "admin/extra/{$this->controller_name}/webhookLog?name=" . Enc::url($name),
+            'name' => 'Webhook Log',
+            'class' => 'icon-link-button icon-before icon-timeline',
+        ];
+
         return $actions;
+    }
+
+
+    /**
+     * View the webhook log.
+     *
+     * Filters:
+     * - reference
+     *
+     * @return array [ title, content ]
+     */
+    public function _extraWebhookLog()
+    {
+        $page_size = 25;
+        $page = max($_GET['page'] ?? 1, 1);
+
+        $filters = false;
+
+        $items = Pdb::find('packages_webhook_log')
+            ->offset(($page - 1) * $page_size)
+            ->limit($page_size)
+            ->orderBy('date_added DESC');
+
+        if (!empty($_GET['id'])) {
+            $filters = true;
+            $items->where(['id' => $_GET['id']]);
+        }
+
+        if (!empty($_GET['name'])) {
+            $filters = true;
+            $items->where(['package_ref' => $_GET['name']]);
+        }
+
+        $itemlist = new Itemlist();
+        $itemlist->items = $items->all();
+        $itemlist->addAction('edit', "admin/extra/{$this->controller_name}/webhookLog?id=%%");
+        $itemlist->main_columns = [
+            'Date' => 'date_added',
+            'IP address' => [new ColModifierHexIP(), 'ip_address'],
+            'Provider' => 'provider',
+            'Event' => 'event',
+            'Package' => 'package_ref',
+            'Success' => [new ColModifierBinary(), 'success'],
+        ];
+
+        $content = $itemlist->render();
+
+        // Show extra content if we're looking at one thing in particular.
+        if ($filters and $page === 1 and count($itemlist->items) === 1) {
+            $item = reset($itemlist->items);
+
+            $headers = json_decode($item['headers'], true);
+            $headers = Arrays::implodeWithKeys($headers, "\r\n", ': ');
+            $headers = Enc::html($headers);
+
+            $body = json_decode($item['body']);
+            $body = json_encode($body, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            $body = Enc::html($body);
+
+            if ($item['error']) {
+                $error = Enc::html($item['error']);
+                $content .= <<<EOF
+                    <h3>Error</h3>
+                    <pre>{$error}</pre>
+                EOF;
+            }
+
+            $content .= <<<EOF
+                <h3>Headers</h3>
+                <pre>{$headers}</pre>
+                <h3>Body</h3>
+                <pre>{$body}</pre>
+            EOF;
+        }
+
+        return [
+            'title' => 'Webhook Log',
+            'content' => $content ?: '<p>No logs.</p>',
+        ];
     }
 
 

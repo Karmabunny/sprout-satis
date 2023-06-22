@@ -5,13 +5,13 @@
 
 namespace SproutModules\Karmabunny\Satis\Controllers\Admin;
 
-use Sprout\Controllers\Admin\ListAdminController;
+use Sprout\Controllers\Admin\HasCategoriesAdminController;
 use Sprout\Helpers\ColModifierBinary;
 
 /**
  * Sites admin
  */
-class SiteAdminController extends ListAdminController
+class SiteAdminController extends HasCategoriesAdminController
 {
     protected $controller_name = 'site';
     protected $friendly_name = 'Sites';

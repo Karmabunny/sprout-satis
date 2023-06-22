@@ -128,6 +128,7 @@
         <column name="error" type="VARCHAR(500)" allownull="1" />
 
         <column name="ip_address" type="VARBINARY(32)" allownull="0" />
+        <column name="path" type="VARBINARY(255)" allownull="0" />
         <column name="username" type="VARBINARY(255)" allownull="0" />
         <column name="password_hash" type="VARBINARY(100)" allownull="0" />
 

@@ -102,7 +102,7 @@ class SiteAdminController extends HasCategoriesAdminController
             'Date' => 'date_added',
             'IP address' => [new ColModifierHexIP(), 'ip_address'],
             'Username' => 'username',
-            'Password (hash)' => 'password_hash',
+            'Resource' => 'path',
             'Error' => 'error',
             'Success' => [new ColModifierBinary(), 'success'],
         ];

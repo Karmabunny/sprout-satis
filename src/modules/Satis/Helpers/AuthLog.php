@@ -6,6 +6,7 @@
 namespace SproutModules\Karmabunny\Satis\Helpers;
 
 use Sprout\Helpers\Request;
+use Sprout\Helpers\Router;
 
 /**
  * Logging for auth events.
@@ -32,6 +33,7 @@ class AuthLog extends BaseLog
         return new self([
             'username' => $user,
             'password_hash' => sha1($pass),
+            'path' => Router::$current_uri,
             'ip_address' => bin2hex(inet_pton(Request::userIp())),
         ]);
     }

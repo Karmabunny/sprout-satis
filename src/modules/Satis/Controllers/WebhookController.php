@@ -5,6 +5,7 @@
 
 namespace SproutModules\Karmabunny\Satis\Controllers;
 
+use JsonException;
 use karmabunny\router\Route;
 use Kohana;
 use Sprout\Controllers\Controller;
@@ -16,6 +17,7 @@ use Sprout\Helpers\Request;
 use Sprout\Helpers\WorkerCtrl;
 use SproutModules\Karmabunny\Satis\Helpers\Satis;
 use SproutModules\Karmabunny\Satis\Helpers\SatisWorker;
+use SproutModules\Karmabunny\Satis\Helpers\WebhookLog;
 use SproutModules\Karmabunny\Satis\Models\Package;
 use Symfony\Component\Console\Output\StreamOutput;
 use Throwable;
@@ -32,6 +34,8 @@ class WebhookController extends Controller
     #[Route('hooks/build/{package}')]
     public function build(string $package)
     {
+        $log = WebhookLog::create('test', 'build');
+
         if (!AdminAuth::isLoggedIn()) {
             throw new HttpException(401, 'Not logged in');
         }
@@ -57,12 +61,21 @@ class WebhookController extends Controller
 
         $package = Package::findOne(['name' => $package]);
 
+        $log->setPackage($package->name);
+
+        // Inline build so we can easily debug the output.
         $output = new StreamOutput(fopen('php://stdout', 'w'));
         $ok = Satis::build($output, [$package->repo_url]);
         Satis::updatePackages([$package->repo_url], $ok);
 
         echo "\n";
         echo $ok ? "ok\n" : "error\n";
+
+        if ($ok) {
+            $log->success();
+        } else {
+            $log->error('Build failed');
+        }
     }
 
 
@@ -79,30 +92,55 @@ class WebhookController extends Controller
         Kohana::closeBuffers(false);
         header('Content-Type: application/json');
 
-        set_exception_handler(function(Throwable $error) {
+        $log = null;
+
+        // A little safety net.
+        // Parse-by-ref so we can retroactively create the logger.
+        set_exception_handler(function(Throwable $error) use (&$log) {
+            /** @var WebhookLog|null $log */
+
+            $status = 500;
+
             if ($error instanceof HttpExceptionInterface) {
                 $status = $error->getStatusCode();
-            } else {
-                $status = 500;
-                Kohana::logException($error, false);
+            }
+
+            if ($status == 500) {
+                $id = Kohana::logException($error, false);
+
+                if ($log) {
+                    $log->error('SE' . $id);
+                }
             }
 
             http_response_code($status);
             Json::error($error);
         });
 
+        // Parse event type.
+        $action = Request::getHeader('x-github-event');
+        $log = WebhookLog::create('github', $action);
+
         $signature = Request::getHeader('x-hub-signature-256');
         if (!$signature) {
             throw new HttpException(401, 'Invalid signature');
         }
 
-        $body = Request::getRawBody();
-        $json = Json::decode($body);
+        // Parse the payload.
+        try {
+            $body = Request::getRawBody();
+            $json = Json::decode($body);
+        }
+        catch (JsonException $error) {
+            $log->error($error->getMessage());
+            throw new HttpException(400, 'Malformed payload', $error);
+        }
 
         $repo_url = $json['repository']['ssh_url'] ?? null;
 
         // Lie.
         if (!$repo_url) {
+            $log->error('Missing ssh_url field');
             throw new HttpException(401, 'Invalid signature');
         }
 
@@ -117,20 +155,23 @@ class WebhookController extends Controller
 
         // Big fat liar.
         if (!$package) {
+            $log->error('Unknown package');
             throw new HttpException(401, 'Invalid signature');
         }
+
+        $log->setPackage($package->name);
 
         // https://docs.github.com/en/webhooks-and-events/webhooks/securing-your-webhooks
         $digest = 'sha256=' . hash_hmac('sha256', $body, $package->webhook_token);
 
         if (!hash_equals($digest, $signature)) {
+            $log->error('Invalid signature');
             throw new HttpException(401, 'Invalid signature');
         }
 
-        $action = Request::getHeader('x-github-event');
-
         if ($action === 'ping') {
             // TODO something else? record it somewhere?
+            $log->success();
             Json::confirm(['message' => 'pong']);
         }
 
@@ -143,6 +184,7 @@ class WebhookController extends Controller
             $package->setWorker($job['job_id']);
         }
 
+        $log->success();
         Json::confirm();
     }
 }

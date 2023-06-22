@@ -11,6 +11,7 @@ use Sprout\Controllers\Controller;
 use Sprout\Helpers\AdminAuth;
 use Sprout\Helpers\Request;
 use Sprout\Helpers\Url;
+use SproutModules\Karmabunny\Satis\Helpers\AuthLog;
 use SproutModules\Karmabunny\Satis\Helpers\Satis;
 use SproutModules\Karmabunny\Satis\Models\Site;
 
@@ -115,16 +116,18 @@ class PackageController extends Controller
 
         [$user, $pass] = explode(':', base64_decode($basic), 2) + [null, null];
 
-        $query = Site::find()
-            ->where([
-                'name' => $user,
-                'token' => $pass,
-            ]);
+        $log = AuthLog::create($user, $pass);
 
-        if ($query->exists()) {
+        $token = Site::find()
+            ->where(['name' => $user])
+            ->value('token', false);
+
+        if ($token and $token === $pass) {
+            $log->success();
             return true;
         }
 
+        $log->error($token ? 'Invalid token' : 'Unknown user');
         return false;
     }
 }

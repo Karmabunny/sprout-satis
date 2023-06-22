@@ -65,6 +65,8 @@ class Package extends Model
         $pdb = static::getConnection();
         $table = static::getTableName();
         $pdb->update($table, ['worker_id' => $id], ['id' => $this->id]);
+
+        $this->worker_id = $id;
     }
 
 
@@ -77,7 +79,10 @@ class Package extends Model
     {
         $pdb = static::getConnection();
         $table = static::getTableName();
-        $pdb->update($table, ['last_build_time' => $pdb->now()], ['id' => $this->id]);
+
+        $now = $pdb->now();
+        $pdb->update($table, ['last_build_time' => $now], ['id' => $this->id]);
+        $this->last_build_time = $now;
     }
 
 

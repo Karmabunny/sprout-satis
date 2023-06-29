@@ -17,9 +17,11 @@ use Kohana;
 
 use SproutModules\Karmabunny\HomePage\Helpers\HomePages;
 use Sprout\Controllers\Controller;
+use Sprout\Helpers\AdminAuth;
 use Sprout\Helpers\Needs;
 use Sprout\Helpers\Url;
 use Sprout\Helpers\View;
+use SproutModules\Karmabunny\Satis\Helpers\Satis;
 
 /**
  * Handles requests for the home page
@@ -34,6 +36,10 @@ class HomePageController extends Controller
      */
     public function index()
     {
-        Url::redirect('/public');
+        if (!AdminAuth::isLoggedIn()) {
+            Url::redirect('admin/login');
+        }
+
+        readfile(Satis::OUTPUT_DIR . '/index.html');
     }
 }

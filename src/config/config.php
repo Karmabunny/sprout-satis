@@ -25,9 +25,9 @@ $config['site_domain'] = '/';
  *   test.example.com
  */
 if (IN_PRODUCTION) {
-    $config['cli_domain'] = 'packages.bunnysites.com';
+    $config['cli_domain'] = 'pkg.bunnysites.com';
 } else {
-    $config['cli_domain'] = 'packages.bunnysites.com';
+    $config['cli_domain'] = 'pkg.bunnysites.com';
 }
 
 

@@ -9,6 +9,7 @@ use karmabunny\router\Route;
 use Sprout\Controllers\Controller;
 use Sprout\Helpers\AdminAuth;
 use Sprout\Helpers\Request;
+use Sprout\Helpers\Router;
 use Sprout\Helpers\Url;
 use SproutModules\Karmabunny\Satis\Helpers\AuthLog;
 use SproutModules\Karmabunny\Satis\Helpers\Satis;
@@ -23,7 +24,7 @@ class PackageController extends Controller
     /**
      * Serve the repo index behind admin auth.
      */
-    #[Route('public')]
+    #[Route('')]
     public function public()
     {
         if (!AdminAuth::isLoggedIn()) {
@@ -37,8 +38,11 @@ class PackageController extends Controller
     /**
      * Serve repo files behind sites auth.
      */
-    #[Route('public/*')]
-    public function repo(...$segments)
+    #[Route('archive/*')]
+    #[Route('include/*')]
+    #[Route('p2/*')]
+    #[Route('packages.json')]
+    public function repo()
     {
         static $REALM = 'Bunnysites Private Packagist';
 
@@ -55,7 +59,7 @@ class PackageController extends Controller
             exit;
         }
 
-        $path = Satis::OUTPUT_DIR . '/' . implode('/', $segments);
+        $path = Satis::OUTPUT_DIR . '/' . Router::$current_uri;
 
         if (!is_file($path)) {
             http_response_code(404);

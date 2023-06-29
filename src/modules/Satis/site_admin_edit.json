@@ -24,6 +24,9 @@
                 "validate": [
                 ]
             }
+        },
+        {
+            "func": "SproutModules\\Karmabunny\\Satis\\Helpers\\FbHack::siteInstructions"
         }
     ],
     "Categories": "categories"

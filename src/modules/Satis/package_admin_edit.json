@@ -40,7 +40,7 @@
             }
         },
         {
-            "func": "SproutModules\\Karmabunny\\Satis\\Helpers\\FbHack::instructions"
+            "func": "SproutModules\\Karmabunny\\Satis\\Helpers\\FbHack::repoInstructions"
         }
     ],
     "Stats": [

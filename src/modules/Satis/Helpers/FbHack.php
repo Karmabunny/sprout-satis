@@ -5,7 +5,9 @@
 
 namespace SproutModules\Karmabunny\Satis\Helpers;
 
+use Kohana;
 use Sprout\Helpers\Fb;
+use Sprout\Helpers\Json;
 use Sprout\Helpers\Sprout;
 
 /**
@@ -56,11 +58,15 @@ class FbHack
     }
 
 
-    public static function instructions()
+    /**
+     * Instructions for settings up github webhooks.
+     *
+     * @return string
+     */
+    public static function repoInstructions(): string
     {
         $url = Sprout::absRoot('https') . 'hooks/github';
 
-        // Instructions for settings up github webhooks.
         return <<<EOF
             <h4>Instructions:</h4>
             <style>
@@ -89,6 +95,62 @@ class FbHack
                 </li>
                 <li>
                     Select <code>Just the push event</code> as the trigger.
+                </li>
+                <li>
+                    Done!
+                </li>
+            </ol>
+        EOF;
+    }
+
+
+    /**
+     * Instructions for adding authentication to a repository.
+     *
+     * @return string
+     */
+    public static function siteInstructions(): string
+    {
+        $domain = $_SERVER['HTTP_HOST'];
+
+        $example_repo = Json::encode([
+            'repositories' => [
+                [
+                    'type' => 'composer',
+                    'url' => "https://{$domain}",
+                ],
+            ],
+        ], true);
+
+        $example_auth = Json::encode([
+            'http-basic' => [
+                $domain => [
+                    'username' => '...',
+                    'password' => '...',
+                ],
+            ],
+        ], true);
+
+        return <<<EOF
+            <h4>Installation:</h4>
+            <style>
+            .-hack-ol {
+                line-height: 2;
+            }
+            .-hack-ol code {
+                padding: 3px 6px;
+            }
+            </style>
+            <ol class="-hack-ol">
+                <li>
+                    <p>Add the following to your project <code>composer.json</code></p>
+                    <pre>{$example_repo}</pre>
+                </li>
+                <li>
+                    <p>Run the following command:</p>
+                    <pre>composer config http-basic.{$domain} <username> <password></pre>
+                    <p>This produces a file that looks like:</p>
+                    <pre>{$example_auth}</pre>
                 </li>
                 <li>
                     Done!

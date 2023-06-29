@@ -6,6 +6,8 @@
  * is _bootstrap_config.php which provides the value for IN_PRODUCTION
  */
 
+use Sprout\Helpers\Register;
+use SproutModules\Karmabunny\RemoteAuth;
 
 /**
  * Base path of the web site.
@@ -34,7 +36,14 @@ if (IN_PRODUCTION) {
 /**
  * Enabled sprout v3 modules
  */
-Sprout\Helpers\Register::modules([
+Register::modules([
     'HomePage',
     'Satis',
+]);
+
+Register::services([
+    RemoteAuth::class => [
+        'url' => 'https://ssl.karmabunny.com.au',
+        'site_domain' => $config['cli_domain'],
+    ],
 ]);

@@ -1,7 +1,0 @@
-#!/bin/sh
-
-echo "Clearing kohana cache"
-rm -f storage/cache/kohana_*
-
-echo "Clearing media cache"
-/usr/bin/php web/index.php media_tools/clean

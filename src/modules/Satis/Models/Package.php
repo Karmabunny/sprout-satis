@@ -33,7 +33,7 @@ class Package extends Model
     public $webhook_token;
 
     /** @var string|null */
-    public $webhook_valid;
+    public $webhook_valid_time;
 
     /** @var string|null */
     public $last_build_time;
@@ -101,7 +101,7 @@ class Package extends Model
 
         $now = $pdb->now();
         $pdb->update($table, ['webhook_valid_time' => $now], ['id' => $this->id]);
-        $this->webhook_valid = $now;
+        $this->webhook_valid_time = $now;
     }
 
 

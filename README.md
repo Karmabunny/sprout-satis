@@ -1,10 +1,11 @@
-SproutCMS 3.2 Application Template
+KB Private Packages
 ==================================
 
-SproutCMS is a flexible and feature rich cms and application framework, developed in PHP,
-designed to enable quick and agile custom development. SproutCMS was built to reward
-innovation and encourage developers to produce complex applications.
-It is built by developers, for developers.
+This is a thin wrapper around Satis to provide a Composer-compatible package server.
+
+Additional features:
+ - Authentication per site
+ - Webhook build triggers
 
 
 Requirements
@@ -19,31 +20,23 @@ Requirements
 * Composer 2 or later
 
 
-Getting started
----------------
+Installation
+------------
 
-1. Run `composer create-project sproutcms/site`
-2. Run `composer serve`
-3. Browse to http://localhost:8080/
+This repo needs access to the private repositories that it is packaging. Create a github access token here:
 
+https://github.com/settings/tokens/new
 
-### Docker
+This can be either a fine-grained or classic token. Note that these have an
+expiry date (max 1 year) so this will need to be updated regularly. Package pulls will continue to work, but publishing packages - either manually
+or with webhooks will fail to complete.
 
-A sample docker configuration is also provided.
+Install this token the on production box in _two_ places:
 
-This a basic Nginx + MariaDB + PHP-FPM installation.
+1. For installing remote auth packages for the application itself:
+   > `composer config github-oauth.github.com <github_pat_TOKEN>`
 
-```sh
-composer create-project sproutcms/site
-composer install
-./start.sh up
-```
-
-> Browse to http://localhost:8080/
-
-
-Documentation
--------------
-
-For more, visit [`sproutcms/cms`](https://github.com/Karmabunny/sprout3).
+2. For pulling packages into the repository:
+   - edit `.env`
+   - > `GITHUB_TOKEN=<github_pat_TOKEN>`
 

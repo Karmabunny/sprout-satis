@@ -9,3 +9,4 @@ src/files
 src/.htaccess
 src/index.php
 *.cache
+auth.json

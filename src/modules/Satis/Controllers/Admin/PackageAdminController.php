@@ -103,7 +103,7 @@ class PackageAdminController extends HasCategoriesAdminController
     {
         // The token has been updated so the webhook needs to be revalidated.
         if (!empty($data['webhook_token'])) {
-            $data['webhook_valid'] = null;
+            $data['webhook_valid_time'] = null;
         }
     }
 

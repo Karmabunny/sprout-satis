@@ -7,6 +7,7 @@ namespace SproutModules\Karmabunny\Satis\Models;
 
 use Sprout\Helpers\Model;
 use Sprout\Helpers\Pdb;
+use SproutModules\Karmabunny\Satis\Helpers\Inspector;
 
 /**
  * Package record.
@@ -142,5 +143,20 @@ class Package extends Model
         }
 
         return false;
+    }
+
+
+    public function getReleases(): array
+    {
+        return $this->getCachedValue('releases', function() {
+            return Inspector::getPackageReleases($this->name) ?? [];
+        });
+    }
+
+
+    public function getVersions(): array
+    {
+        $releases = $this->getReleases();
+        return Inspector::getPackageVersions($releases);
     }
 }

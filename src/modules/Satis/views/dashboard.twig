@@ -1,0 +1,42 @@
+
+<div class="row">
+    <div class="col col--one-half">
+        <h3><a href="admin/contents/package">Packages</a></h3>
+        <table class="main-list">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Last Build</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for package in packages %}
+            <tr>
+                <td><a href="admin/edit/package/{{ package.id }}">{{ package.name }}</a></td>
+                <td>{{ package.build_success ? 'Success' : 'Error' }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+    </div>
+
+    <div class="col col--one-half">
+    <table class="main-list">
+        <h3><a href="admin/contents/site">Sites</a></h3>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Active</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for site in sites %}
+            <tr>
+                <td><a href="admin/edit/site/{{ site.id }}">{{ site.name }}</a></td>
+                <td>{{ site.active ? 'Active' : '' }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+    </div>
+</div>

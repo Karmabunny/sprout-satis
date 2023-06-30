@@ -7,6 +7,7 @@ use Sprout\Helpers\Register;
 
 
 Register::adminControllers('Karmabunny\Satis', [
+    'dashboard' => 'Admin\DashboardAdminController',
     'package' => 'Admin\PackageAdminController',
     'package_category' => 'Admin\PackageCategoryAdminController',
     'site' => 'Admin\SiteAdminController',

@@ -73,7 +73,7 @@ class FbHack
 
         foreach ($versions as $version) {
             $version = Enc::html($version);
-            echo "<pre>{$version}</pre>";
+            echo "<code>{$version}</code>";
         }
 
         return ob_get_clean();

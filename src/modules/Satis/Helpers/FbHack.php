@@ -93,6 +93,14 @@ class FbHack
     {
         $url = Sprout::absRoot('https') . 'hooks/github';
 
+        $token = Fb::getData('webhook_token');
+
+        if ($token) {
+            $token = '<code>' . Enc::html($token) . '</code>';
+        } else {
+            $token = '(above)';
+        }
+
         return <<<EOF
             <h4>Instructions:</h4>
             <style>
@@ -114,7 +122,7 @@ class FbHack
                     Enter this URL: <code>{$url}</code>
                 </li>
                 <li>
-                    Enter the webhook token (above)
+                    Enter the webhook token {$token}
                 </li>
                 <li>
                     Select <code>application/json</code> as the content type.
@@ -137,6 +145,11 @@ class FbHack
      */
     public static function siteInstructions(): string
     {
+        $id = Fb::getData('id');
+        if (!$id) {
+            return '';
+        }
+
         $domain = $_SERVER['HTTP_HOST'];
 
         $example_repo = Json::encode([
@@ -151,8 +164,8 @@ class FbHack
         $example_auth = Json::encode([
             'http-basic' => [
                 $domain => [
-                    'username' => '...',
-                    'password' => '...',
+                    'username' => Fb::getData('name'),
+                    'password' => Fb::getData('token'),
                 ],
             ],
         ], true);
@@ -173,9 +186,7 @@ class FbHack
                     <pre>{$example_repo}</pre>
                 </li>
                 <li>
-                    <p>Run the following command:</p>
-                    <pre>composer config http-basic.{$domain} <username> <password></pre>
-                    <p>This produces a file that looks like:</p>
+                    <p>Copy this into a file - <code>auth.json</code></p>
                     <pre>{$example_auth}</pre>
                 </li>
                 <li>

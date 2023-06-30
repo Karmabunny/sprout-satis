@@ -6,6 +6,7 @@
 namespace SproutModules\Karmabunny\Satis\Helpers;
 
 use Kohana;
+use Sprout\Helpers\Enc;
 use Sprout\Helpers\Fb;
 use Sprout\Helpers\Json;
 use Sprout\Helpers\Sprout;
@@ -55,6 +56,27 @@ class FbHack
         return <<<EOF
             <a href="admin/edit/worker_job/{$data}">Job #{$data}</a>
         EOF;
+    }
+
+
+    public static function versions(): string
+    {
+        $name = Fb::getData('name');
+        if (!$name) return ' -- no versions -- ';
+
+        $releases = Inspector::getPackageReleases($name);
+        if (!$releases) return ' -- no versions -- ';
+
+        $versions = Inspector::getPackageVersions($releases);
+
+        ob_start();
+
+        foreach ($versions as $version) {
+            $version = Enc::html($version);
+            echo "<pre>{$version}</pre>";
+        }
+
+        return ob_get_clean();
     }
 
 

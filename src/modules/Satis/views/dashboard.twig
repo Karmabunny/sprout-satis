@@ -7,6 +7,7 @@
             <tr>
                 <th>Name</th>
                 <th>Last Build</th>
+                <th>Latest Version</th>
             </tr>
         </thead>
         <tbody>
@@ -14,6 +15,7 @@
             <tr>
                 <td><a href="admin/edit/package/{{ package.id }}">{{ package.name }}</a></td>
                 <td>{{ package.build_success ? 'Success' : 'Error' }}</td>
+                <td>{{ package.versions|first }}</td>
             </tr>
         {% endfor %}
         </tbody>

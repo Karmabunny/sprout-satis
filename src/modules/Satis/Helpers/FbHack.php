@@ -71,10 +71,14 @@ class FbHack
 
         ob_start();
 
+        echo "<div style='display: flex; flex-wrap: wrap;'>";
+
         foreach ($versions as $version) {
             $version = Enc::html($version);
-            echo "<code>{$version}</code>";
+            echo "<code style='margin:0'>{$version}</code>";
         }
+
+        echo "</div>";
 
         return ob_get_clean();
     }

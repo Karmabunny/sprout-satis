@@ -128,6 +128,10 @@ class Package extends Model
             return false;
         }
 
+        if ($worker['status'] === 'Success') {
+            return false;
+        }
+
         if ($worker['status'] === 'Failed') {
             return false;
         }

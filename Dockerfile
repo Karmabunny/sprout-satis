@@ -24,6 +24,7 @@ RUN set -xe \
     php81-mbstring \
     php81-pdo_mysql \
     php81-phar \
+    php81-posix \
     php81-session \
     php81-tokenizer \
     php81-xml \

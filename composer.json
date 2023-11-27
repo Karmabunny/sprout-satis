@@ -38,7 +38,7 @@
     },
     "require": {
         "composer/satis": "dev-main",
-        "sproutcms/cms": "^3.2"
+        "sproutcms/cms": "^3.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5"

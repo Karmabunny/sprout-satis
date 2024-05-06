@@ -13,22 +13,33 @@ use Sprout\Helpers\Json;
 class Inspector
 {
 
-    public static function getRoot(): array
+    public static function getRoot(): ?array
     {
         static $root;
 
         if (!$root) {
             $root = Satis::OUTPUT_DIR . '/packages.json';
-            $root = file_get_contents($root);
+            $root = @file_get_contents($root);
+
+            if ($root === false) {
+                return null;
+            }
+
             $root = Json::decode($root, true);
         }
 
         return $root;
     }
 
+
     public static function getAllPackages(): array
     {
         $root = self::getRoot();
+
+        if ($root === null) {
+            return [];
+        }
+
         return $root['available-packages'];
 
         // foreach ($root['includes'] ?? [] as $key => $include) {
@@ -46,6 +57,11 @@ class Inspector
     public static function getPackageReleases(string $name): ?array
     {
         $root = self::getRoot();
+
+        if ($root === null) {
+            return null;
+        }
+
         $path = Satis::OUTPUT_DIR . str_replace('%package%', $name, $root['metadata-url']);
 
         $package = [];

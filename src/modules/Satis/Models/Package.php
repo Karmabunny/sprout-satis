@@ -27,6 +27,9 @@ class Package extends Model
     /** @var string */
     public $name;
 
+    /** @var int */
+    public $record_order;
+
     /** @var string */
     public $repo_url;
 

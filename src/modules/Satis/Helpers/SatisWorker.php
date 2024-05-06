@@ -21,6 +21,8 @@ class SatisWorker extends WorkerBase
     /** @inheritdoc */
     public function run(array $packages = [])
     {
+        ini_set('memory_limit', '256M');
+
         $output = new WorkerOutput();
 
         $ok = Satis::build($output, $packages);

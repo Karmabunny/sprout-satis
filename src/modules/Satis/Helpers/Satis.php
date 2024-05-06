@@ -64,6 +64,11 @@ class Satis
                     'url' => $package->repo_url,
                 ];
             }
+
+            // Ensure the folder exists.
+            if (!file_exists(self::OUTPUT_DIR)) {
+                mkdir(self::OUTPUT_DIR, 0777, true);
+            }
         }
 
         return $config;

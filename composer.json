@@ -39,7 +39,7 @@
     "require": {
         "composer/satis": "dev-main",
         "karmabunny/sproutremote": "^1.1",
-        "sproutcms/cms": "^3.3"
+        "sproutcms/cms": "3.3.*"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5"

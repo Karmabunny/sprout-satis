@@ -17,6 +17,7 @@ use Composer\Satis\Builder\WebBuilder;
 use Composer\Satis\PackageSelection\PackageSelection;
 use Composer\Util\ProcessExecutor;
 use InvalidArgumentException;
+use Kohana;
 use Sprout\Helpers\Pdb;
 use Sprout\Helpers\Sprout;
 use SproutModules\Karmabunny\Satis\Models\Package;
@@ -37,8 +38,6 @@ class Satis
 
     /**
      * Build a satis config from our repos.
-     *
-     * Note, this doesn't include the github token because YOU can't be trusted with it.
      *
      * @return array
      */
@@ -70,6 +69,14 @@ class Satis
                 mkdir(self::OUTPUT_DIR, 0777, true);
             }
         }
+
+        // Inject github token bits.
+        $token = Kohana::config('satis.github_token');
+
+        $config['config']['github-protocols'] = ['https'];
+        $config['config']['github-oauth'] = [
+            'github.com' => $token,
+        ];
 
         return $config;
     }
@@ -117,14 +124,6 @@ class Satis
         ]));
 
         $config = self::getConfig();
-
-        // Inject github token bits.
-        if ($_SERVER['GITHUB_TOKEN'] ?? null) {
-            $config['config']['github-protocols'] = ['https'];
-            $config['config']['github-oauth'] = [
-                'github.com' => $_SERVER['GITHUB_TOKEN'],
-            ];
-        }
 
         $composer = self::getComposer($config);
         $composerConfig = $composer->getConfig();

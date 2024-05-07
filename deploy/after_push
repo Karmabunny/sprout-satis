@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-umask 002
-
-docker exec packages_app_1 deploy/run.sh
-
-echo "Done."

@@ -67,7 +67,7 @@ class PackageAdminController extends HasCategoriesAdminController
         $tools['config'] = '<li class="config"><a href="' . Enc::html($url) . '">View Config</a></li>';
 
         $url = "admin/extra/{$this->controller_name}/webhookLog";
-        $tools['config'] = '<li class="config"><a href="' . Enc::html($url) . '">Webhook Log</a></li>';
+        $tools['webhook'] = '<li class="config"><a href="' . Enc::html($url) . '">Webhook Log</a></li>';
 
         return $tools;
     }

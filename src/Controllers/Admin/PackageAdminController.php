@@ -16,6 +16,7 @@ use Sprout\Helpers\Json;
 use Sprout\Helpers\Notification;
 use Sprout\Helpers\Pdb;
 use Sprout\Helpers\Request;
+use Sprout\Helpers\Security;
 use Sprout\Helpers\Url;
 use Sprout\Helpers\WorkerCtrl;
 use SproutModules\Karmabunny\Satis\Helpers\SatisWorker;
@@ -192,7 +193,11 @@ class PackageAdminController extends HasCategoriesAdminController
      */
     public function viewConfig()
     {
+        $secrets = Security::getSecretSanitizer();
+        $secrets->addKeyRule('^github_pat');
+
         $config = Satis::getConfig();
+        $config = $secrets->mask($config);
         $config = Json::encode($config, true);
 
         echo '<pre>';

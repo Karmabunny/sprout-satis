@@ -48,10 +48,16 @@ class Satis
         if ($config === null) {
             $config = [];
             $config['homepage'] = rtrim(Sprout::absRoot(), '/');
-            $config['name'] = 'karmabunny/packages';
+            $config['name'] = Kohana::config('satis.name');
             $config['output-dir'] = self::OUTPUT_DIR;
             $config['require-all'] = true;
             $config['archive']['directory'] = 'archive';
+
+            // Inject github token bits.
+            $config['config']['github-protocols'] = ['https'];
+            $config['config']['github-oauth'] = [
+                'github.com' => Kohana::config('satis.github_token'),
+            ];
 
             $config['repositories'] = [];
 
@@ -69,14 +75,6 @@ class Satis
                 mkdir(self::OUTPUT_DIR, 0777, true);
             }
         }
-
-        // Inject github token bits.
-        $token = Kohana::config('satis.github_token');
-
-        $config['config']['github-protocols'] = ['https'];
-        $config['config']['github-oauth'] = [
-            'github.com' => $token,
-        ];
 
         return $config;
     }

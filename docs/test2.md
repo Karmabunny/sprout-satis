@@ -1,5 +1,0 @@
-# neat!
-
-- one
-- two
-- three

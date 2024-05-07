@@ -1,4 +1,4 @@
-KB Private Packages
+Sprout 4 Satis Module
 ==================================
 
 This is a thin wrapper around Satis to provide a Composer-compatible package server.
@@ -11,11 +11,11 @@ Additional features:
 Requirements
 ------------
 
-* PHP 7.4 or later
+* PHP 8.2 or later
 
 * A web server, e.g. Apache or nginx
 
-* MySQL 5.7 or later, or MariaDB 10.3 or later
+* MySQL 8.0 or later, or MariaDB 10.4 or later
 
 * Composer 2 or later
 
@@ -23,7 +23,7 @@ Requirements
 Installation
 ------------
 
-This repo needs access to the private repositories that it is packaging. Create a github access token here:
+This module needs access to the private repositories that it is packaging. Create a github access token here:
 
 https://github.com/settings/tokens/new
 

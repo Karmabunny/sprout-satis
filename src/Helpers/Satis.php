@@ -9,6 +9,7 @@ use Composer\Composer;
 use Composer\Factory;
 use Composer\IO\NullIO;
 use Composer\Package\Loader\RootPackageLoader;
+use Composer\Package\PackageInterface;
 use Composer\Package\Version\VersionGuesser;
 use Composer\Package\Version\VersionParser;
 use Composer\Satis\Builder\ArchiveBuilder;
@@ -109,11 +110,18 @@ class Satis
      *
      * @param OutputInterface $output
      * @param string[] $filter repo url filter
-     * @return bool
+     * @return PackageInterface[]
      */
-    public static function build(OutputInterface $output, array $filter = []): bool
+    public static function build(OutputInterface $output, array $filter = []): array
     {
         static $SKIP_ERRORS = false;
+
+        if (!$filter) {
+            $filter = Package::find()
+                ->select('repo_url')
+                ->where(['active' => true])
+                ->column();
+        }
 
         // Uh. stuff.
         $io = new NullIO();
@@ -149,10 +157,8 @@ class Satis
 
         $packageSelection = new PackageSelection($output, self::OUTPUT_DIR, $config, $SKIP_ERRORS);
 
-        if ($filter) {
-            $packageSelection->setRepositoriesFilter($filter);
-            // $packageSelection->setPackagesFilter($packageFilter);
-        }
+        $packageSelection->setRepositoriesFilter($filter);
+        // $packageSelection->setPackagesFilter($packageFilter);
 
         $packages = $packageSelection->select($composer, false);
 
@@ -179,7 +185,7 @@ class Satis
         $web->setRootPackage($composer->getPackage());
         $web->dump($packages);
 
-        return true;
+        return $packages;
     }
 
 
@@ -188,23 +194,19 @@ class Satis
      *
      * If the filter is empty, all packages are updated.
      *
-     * @param string[] $filter repo urls
+     * @param PackageInterface[] $packages repo urls
      * @param bool $success
      * @return void
      */
-    public static function updatePackages(array $filter, bool $success)
+    public static function updatePackages(array $packages, bool $success = true)
     {
         $data = [
             'last_build_time' => Pdb::now(),
             'build_success' => $success,
         ];
 
-        if (empty($filter)) {
-            // Not great.
-            Pdb::update('packages', $data, ['active' => true]);
+        $urls = array_map(fn(PackageInterface $pkg) => $pkg->getSourceUrl(), $packages);
 
-        } else {
-            Pdb::update('packages', $data, [['repo_url', 'in', $filter]]);
-        }
+        Pdb::update('packages', $data, [['repo_url', 'in', $urls]]);
     }
 }

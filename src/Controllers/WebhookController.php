@@ -65,8 +65,8 @@ class WebhookController extends Controller
 
         // Inline build so we can easily debug the output.
         $output = new StreamOutput(fopen('php://stdout', 'w'));
-        $ok = Satis::build($output, [$package->repo_url]);
-        Satis::updatePackages([$package->repo_url], $ok);
+        $packages = Satis::build($output, [$package->repo_url]);
+        Satis::updatePackages($packages);
 
         echo "\n";
         echo $ok ? "ok\n" : "error\n";

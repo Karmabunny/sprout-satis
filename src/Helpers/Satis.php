@@ -200,7 +200,8 @@ class Satis
         ];
 
         if (empty($filter)) {
-            Pdb::update('packages', $data, []);
+            // Not great.
+            Pdb::update('packages', $data, ['active' => true]);
 
         } else {
             Pdb::update('packages', $data, [['repo_url', 'in', $filter]]);

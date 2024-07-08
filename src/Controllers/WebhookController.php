@@ -43,7 +43,7 @@ class WebhookController extends Controller
         Kohana::closeBuffers(false);
         header('Content-Type: text/plain');
 
-        set_exception_handler(function(Throwable $error) {
+        set_exception_handler(function(Throwable $error) use ($log) {
             if (!$error instanceof HttpExceptionInterface) {
                 Kohana::logException($error, false);
             }
@@ -56,6 +56,7 @@ class WebhookController extends Controller
                 echo "error\n";
             }
 
+            $log->error($error->getMessage());
             exit;
         });
 
@@ -69,13 +70,9 @@ class WebhookController extends Controller
         Satis::updatePackages($packages);
 
         echo "\n";
-        echo $ok ? "ok\n" : "error\n";
+        echo "ok\n";
 
-        if ($ok) {
-            $log->success();
-        } else {
-            $log->error('Build failed');
-        }
+        $log->success();
     }
 
 

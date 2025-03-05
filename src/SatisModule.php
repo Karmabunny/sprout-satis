@@ -13,6 +13,6 @@ class SatisModule extends Module
     /** @inheritdoc */
     public function getVersion(): string
     {
-        return Sprout::getInstalledVersion('karmabunny/satis');
+        return Sprout::getInstalledVersion('karmabunny/sprout-satis');
     }
 }

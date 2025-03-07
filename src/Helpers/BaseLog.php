@@ -38,15 +38,16 @@ abstract class BaseLog
      */
     protected function __construct(array $data)
     {
-        $data['date_added'] ??= Pdb::now();
-        $data['ip_address'] ??= bin2hex(inet_pton(Request::userIp()));
-        $data['error'] ??= 'Fatal';
-        $data['success'] ??= 0;
-
         $table = static::getTableName();
 
         try {
             $this->pdb = \Sprout\Helpers\Pdb::getInstance();
+
+            $data['date_added'] ??= $this->pdb->now();
+            $data['ip_address'] ??= bin2hex(inet_pton(Request::userIp()));
+            $data['error'] ??= 'Fatal';
+            $data['success'] ??= 0;
+
             $this->id = $this->pdb->insert($table, $data);
         } catch (Throwable $error) {
             Kohana::logException($error);

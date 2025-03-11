@@ -95,7 +95,6 @@ class Package extends Model
      *
      * This is just for debugging. It has no functional purpose.
      *
-     * @param int $id
      * @return void
      */
     public function setValidWebhook()

@@ -25,7 +25,7 @@ class Inspector
                 return null;
             }
 
-            $root = Json::decode($root, true);
+            $root = Json::decode($root);
         }
 
         return $root;

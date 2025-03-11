@@ -17,7 +17,7 @@ class WorkerOutput extends Output
 
 
     /** @inheritdoc */
-    protected function doWrite(string $message, bool $newline)
+    protected function doWrite(string $message, bool $newline): void
     {
         $this->buffer .= $message;
 

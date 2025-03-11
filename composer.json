@@ -32,6 +32,7 @@
         "test": "phpunit --testdox --configuration phpunit.xml.dist"
     },
     "require": {
+        "php": "^8.2",
         "composer/satis": "dev-main",
         "sproutcms/cms": "^4"
     },

@@ -6,6 +6,7 @@
 namespace SproutModules\Karmabunny\Satis\Controllers;
 
 use karmabunny\router\Route;
+use Kohana;
 use Sprout\Controllers\Controller;
 use Sprout\Helpers\AdminAuth;
 use Sprout\Helpers\Request;
@@ -44,10 +45,10 @@ class PackageController extends Controller
     #[Route('packages.json')]
     public function repo()
     {
-        static $REALM = 'Bunnysites Private Packagist';
+        $realm = Kohana::config('satis.realm');
 
         if (!$this->hasAuth()) {
-            header("www-authenticate: basic realm=\"$REALM\", charset=\"UTF-8\"");
+            header("www-authenticate: basic realm=\"$realm\", charset=\"UTF-8\"");
             http_response_code(401);
             echo '401', "\n";
             exit;

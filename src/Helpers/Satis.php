@@ -55,10 +55,12 @@ class Satis
             $config['archive']['directory'] = 'archive';
 
             // Inject github token bits.
-            $config['config']['github-protocols'] = ['https'];
-            $config['config']['github-oauth'] = [
-                'github.com' => Kohana::config('satis.github_token'),
-            ];
+            if ($token = Kohana::config('satis.github_token')) {
+                $config['config']['github-protocols'] = ['https'];
+                $config['config']['github-oauth'] = [
+                    'github.com' => $token,
+                ];
+            }
 
             $config['repositories'] = [];
 

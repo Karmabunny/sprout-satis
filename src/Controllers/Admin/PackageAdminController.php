@@ -19,6 +19,7 @@ use Sprout\Helpers\Request;
 use Sprout\Helpers\Security;
 use Sprout\Helpers\Url;
 use Sprout\Helpers\WorkerCtrl;
+use SproutModules\Karmabunny\Satis\Helpers\Assets;
 use SproutModules\Karmabunny\Satis\Helpers\SatisWorker;
 use SproutModules\Karmabunny\Satis\Helpers\Satis;
 use SproutModules\Karmabunny\Satis\Models\Package;
@@ -227,6 +228,25 @@ class PackageAdminController extends HasCategoriesAdminController
 
         Notification::confirm("Build started: <a href='{$job['log_url']}'>{$package->name}</a>", 'html');
         Url::redirect(Request::getHeader('referer') ?: "admin/{$this->controller_name}/edit/{$item_id}");
+    }
+
+
+    /**
+     * Delete a companion asset.
+     *
+     * @return never
+     */
+    public function deleteAsset()
+    {
+        $package = $_GET['package'];
+        $tag = $_GET['tag'];
+
+        $package = Package::findOne(['name' => $package]);
+
+        Assets::delete($package->name, $tag);
+
+        Notification::confirm("Asset deleted: {$package->name} {$tag}");
+        Url::redirect("admin/edit/{$this->controller_name}/{$package->id}");
     }
 }
 

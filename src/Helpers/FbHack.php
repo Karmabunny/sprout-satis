@@ -62,7 +62,7 @@ class FbHack
     public static function versions(): string
     {
         $name = Fb::getData('name');
-        if (!$name) return ' -- no versions -- ';
+        if (!$name) return ' -- no package -- ';
 
         $releases = Inspector::getPackageReleases($name);
         if (!$releases) return ' -- no versions -- ';
@@ -71,14 +71,31 @@ class FbHack
 
         ob_start();
 
-        echo "<div style='display: flex; flex-wrap: wrap;'>";
+        $heading = '';
 
         foreach ($versions as $version) {
+            [$major] = preg_split('/[.-]/', $version, 2);
+
+            if ($heading != $major) {
+                $major = Enc::html($major);
+                if ($heading) echo "</ul>";
+                echo "<h4>{$major}</h4>";
+                echo "<ul>";
+                $heading = $major;
+            }
+
             $version = Enc::html($version);
-            echo "<code style='margin:0'>{$version}</code>";
+            $asset = '';
+
+            if (Assets::exists($name, $version)) {
+                $query = http_build_query([ 'package' => $name, 'tag' => $version ]);
+                $asset = "<a href='ROOT/admin/call/package/deleteAsset?{$query}'>(delete)</a>";
+            }
+
+            echo "<li>{$version} {$asset}</li>";
         }
 
-        echo "</div>";
+        if ($heading) echo "</ul>";
 
         return ob_get_clean();
     }

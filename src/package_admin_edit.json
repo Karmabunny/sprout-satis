@@ -97,7 +97,7 @@
         {
             "field": {
                 "name": "_versions",
-                "label": "Versions",
+                "label": "",
                 "display": "SproutModules\\Karmabunny\\Satis\\Helpers\\FbHack::versions",
                 "save": false,
                 "required": false,

@@ -73,7 +73,10 @@ class FbHack
 
         $heading = '';
 
-        foreach ($versions as $version) {
+        foreach ($releases as $package) {
+            $version = $package['version'];
+            $ref = $package['dist']['reference'] ?? null;
+
             [$major] = preg_split('/[.-]/', $version, 2);
 
             if ($heading != $major) {
@@ -87,8 +90,8 @@ class FbHack
             $version = Enc::html($version);
             $asset = '';
 
-            if (Assets::exists($name, $version)) {
-                $query = http_build_query([ 'package' => $name, 'tag' => $version ]);
+            if ($ref and Assets::exists($name, $ref)) {
+                $query = http_build_query([ 'package' => $name, 'ref' => $ref ]);
                 $asset = "<a href='ROOT/admin/call/package/deleteAsset?{$query}'>(delete)</a>";
             }
 

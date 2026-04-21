@@ -88,20 +88,25 @@ class Inspector
             return -1 * version_compare($a['version_normalized'], $b['version_normalized']);
         });
 
-        return array_merge($package, $dev);
+        $releases = [];
+
+        foreach ($package as $release) {
+            $key = $release['version_normalized'];
+            $releases[$key] = $release;
+        }
+
+        foreach ($dev as $release) {
+            $key = $release['version_normalized'];
+            $releases[$key] = $release;
+        }
+
+        return $releases;
     }
 
 
     public static function getPackageVersions(array $releases): array
     {
-        $versions = [];
-
-        foreach ($releases as $release) {
-            $key = $release['version_normalized'];
-            $versions[$key] = $release['version'];
-        }
-
-        return $versions;
+        return array_column($releases, 'version');
     }
 
 }

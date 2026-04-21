@@ -14,16 +14,16 @@ class Assets
     const OUTPUT_DIR = STORAGE_PATH . 'assets';
 
 
-    public static function exists(string $package, string $version): bool
+    public static function exists(string $package, string $ref): bool
     {
-        $path = self::OUTPUT_DIR . "/{$package}/{$version}.zip";
+        $path = self::OUTPUT_DIR . "/{$package}/{$ref}.zip";
         return is_file($path);
     }
 
 
-    public static function delete(string $package, string $version)
+    public static function delete(string $package, string $ref)
     {
-        $path = self::OUTPUT_DIR . "/{$package}/{$version}.zip";
+        $path = self::OUTPUT_DIR . "/{$package}/{$ref}.zip";
         @unlink($path);
     }
 

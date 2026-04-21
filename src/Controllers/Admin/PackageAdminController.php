@@ -239,13 +239,15 @@ class PackageAdminController extends HasCategoriesAdminController
     public function deleteAsset()
     {
         $package = $_GET['package'];
-        $tag = $_GET['tag'];
+        $ref = $_GET['ref'];
 
         $package = Package::findOne(['name' => $package]);
 
-        Assets::delete($package->name, $tag);
+        Assets::delete($package->name, $ref);
 
-        Notification::confirm("Asset deleted: {$package->name} {$tag}");
+        $short_ref = substr($ref, 0, 7);
+
+        Notification::confirm("Asset deleted: {$package->name} ({$short_ref})");
         Url::redirect("admin/edit/{$this->controller_name}/{$package->id}");
     }
 }

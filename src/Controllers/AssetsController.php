@@ -86,7 +86,7 @@ class AssetsController extends Controller
         });
 
         $validator = new Validator($_GET);
-        $validator->required(['package', 'tag']);
+        $validator->required(['package', 'ref']);
 
         if ($validator->hasErrors()) {
             Json::error([
@@ -100,8 +100,9 @@ class AssetsController extends Controller
         }
 
         $package = $_GET['package'];
-        $tag = $_GET['tag'];
+        $ref = $_GET['ref'];
 
+        /** @var Package|null $package */
         $package = Package::find()
             ->where(['name' => $package])
             ->throw(false)
@@ -128,22 +129,17 @@ class AssetsController extends Controller
             throw new HttpException(400, 'Invalid zip');
         }
 
-        if (!preg_match('/^(dev-|v\d+)/', $tag)) {
-            throw new HttpException(400, 'Invalid tag');
-        }
-
-        $path = Assets::OUTPUT_DIR . '/' . $package->name . '/' . $tag . '.zip';
+        $path = Assets::OUTPUT_DIR . "/{$package->name}/{$ref}.zip";
         $exists = file_exists($path);
 
-        // Can't overwrite a non-dev tag.
-        if (!str_starts_with($tag, 'dev-') and $exists) {
-            throw new HttpException(400, 'Tag already exists');
+        if ($exists) {
+            throw new HttpException(400, 'Reference already exists');
         }
 
         @mkdir(dirname($path), 0777, true);
         file_put_contents($path, $body);
 
-        http_response_code($exists ? 200 : 201);
+        http_response_code(201);
         Json::confirm();
     }
 }

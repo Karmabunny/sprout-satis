@@ -67,8 +67,6 @@ class FbHack
         $releases = Inspector::getPackageReleases($name);
         if (!$releases) return ' -- no versions -- ';
 
-        $versions = Inspector::getPackageVersions($releases);
-
         ob_start();
 
         $heading = '';
@@ -87,6 +85,7 @@ class FbHack
                 $heading = $major;
             }
 
+            $short_ref = str_contains($version, 'dev') ? substr($ref, 0, 7) : '';
             $version = Enc::html($version);
             $asset = '';
 
@@ -95,7 +94,7 @@ class FbHack
                 $asset = "<a href='ROOT/admin/call/package/deleteAsset?{$query}'>(delete)</a>";
             }
 
-            echo "<li>{$version} {$asset}</li>";
+            echo "<li>{$version} {$short_ref} {$asset}</li>";
         }
 
         if ($heading) echo "</ul>";

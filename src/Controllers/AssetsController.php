@@ -132,14 +132,16 @@ class AssetsController extends Controller
         $path = Assets::OUTPUT_DIR . "/{$package->name}/{$ref}.zip";
         $exists = file_exists($path);
 
-        if ($exists) {
+        $overwrite = filter_var(Request::getHeader('x-publish-overwrite'), FILTER_VALIDATE_BOOLEAN);
+
+        if ($exists and !$overwrite) {
             throw new HttpException(400, 'Reference already exists');
         }
 
         @mkdir(dirname($path), 0777, true);
         file_put_contents($path, $body);
 
-        http_response_code(201);
+        http_response_code($exists ? 200 : 201);
         Json::confirm();
     }
 }

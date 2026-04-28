@@ -19,6 +19,7 @@ use Composer\Satis\PackageSelection\PackageSelection;
 use Composer\Util\ProcessExecutor;
 use InvalidArgumentException;
 use Kohana;
+use Sprout\Helpers\Mutex;
 use Sprout\Helpers\Pdb;
 use Sprout\Helpers\Sprout;
 use SproutModules\Karmabunny\Satis\Models\Package;
@@ -116,6 +117,12 @@ class Satis
      */
     public static function build(OutputInterface $output, array $filter = []): array
     {
+        $mutex = Mutex::create('satis');
+
+        if (!$mutex->acquire(10)) {
+            throw new \Exception('Cannot acquire satis mutex');
+        }
+
         static $SKIP_ERRORS = false;
 
         if (!$filter) {
@@ -186,6 +193,8 @@ class Satis
         $web = new WebBuilder($output, self::OUTPUT_DIR, $config, $SKIP_ERRORS);
         $web->setRootPackage($composer->getPackage());
         $web->dump($packages);
+
+        $mutex->release();
 
         return $packages;
     }

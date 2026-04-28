@@ -181,10 +181,9 @@ class WebhookController extends Controller
 
         $package->setValidWebhook();
 
-        if (!$package->isBuilding()) {
-            $job = WorkerCtrl::start(SatisWorker::class, [$package->repo_url]);
-            $package->setWorker($job['job_id']);
-        }
+        $job = new SatisWorker([$package->repo_url]);
+        $job_id = WorkerCtrl::push($job);
+        $package->setWorker($job_id);
 
         $log->success();
         Json::confirm();

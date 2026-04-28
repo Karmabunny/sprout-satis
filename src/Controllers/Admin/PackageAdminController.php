@@ -212,8 +212,9 @@ class PackageAdminController extends HasCategoriesAdminController
      */
     public function buildAllPackages()
     {
-        $worker = WorkerCtrl::start(SatisWorker::class);
-        Url::redirect($worker['log_url']);
+        $job = new SatisWorker();
+        $job_id = WorkerCtrl::push($job);
+        Url::redirect("admin/edit/worker_job/{$job_id}");
     }
 
 
@@ -223,10 +224,14 @@ class PackageAdminController extends HasCategoriesAdminController
     public function buildPackage($item_id)
     {
         $package = Package::findOne(['id' => $item_id]);
-        $job = WorkerCtrl::start(SatisWorker::class, [$package->repo_url]);
-        $package->setWorker($job['job_id']);
 
-        Notification::confirm("Build started: <a href='{$job['log_url']}'>{$package->name}</a>", 'html');
+        $job = new SatisWorker([$package->repo_url]);
+        $job_id = WorkerCtrl::push($job);
+        $package->setWorker($job_id);
+
+        $url = "admin/edit/worker_job/{$job_id}";
+
+        Notification::confirm("Build queued: <a href=\"{$url}\">{$package->name}</a>", 'html');
         Url::redirect(Request::getHeader('referer') ?: "admin/{$this->controller_name}/edit/{$item_id}");
     }
 
